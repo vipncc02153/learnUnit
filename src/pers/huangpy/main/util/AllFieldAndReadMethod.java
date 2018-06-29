@@ -29,11 +29,12 @@ public class AllFieldAndReadMethod {
 
         Class<? extends Object> currentClz = clazz;
 
+        //使用
         while(currentClz != null){
             Collections.addAll(allFields, currentClz.getDeclaredFields());
             currentClz = currentClz.getSuperclass();
         }
-        return allFields.toArray(new Field[allFields.size()]);
+        return allFields.toArray(new Field[0]);
 
     }
 

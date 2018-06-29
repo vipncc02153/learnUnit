@@ -10,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import static pers.huangpy.main.util.DateUtil.formatDateObj;
+
 /**
  * Created by ss on 2018/6/24.
  */
@@ -61,14 +63,14 @@ public class BeanToJson {
 
     private static String invokeToResult(Object invoke,Field field){
         if (invoke != null ) {
-            if(ObjectUtil.isNumber(field)) {
-                return "\"" + field.getName() + "\"" + ":" + invoke.toString() + ", ";
+            if(ObjectUtil.isString(field)) {
+                return "\"" + field.getName() + "\"" + ":" + "\"" + invoke.toString() + "\"" + ", ";
+            }else if(field.getGenericType().toString().equals("class java.util.Date")){
+                return "\"" + field.getName() + "\"" + ":" + "\"" + formatDateObj(invoke) + "\"" + ", ";
             }else if(ObjectUtil.isBean(invoke)){
                 return "\"" + field.getName() + "\"" + ":" + beanToJson(invoke) + ", ";
-            }else if(field.getGenericType().toString().equals("class java.util.Date")){
-                return "\"" + field.getName() + "\"" + ":" + "\"" + DateUtil.formatDateObj(invoke) + "\"" + ", ";
             }else{
-                return "\"" + field.getName() + "\"" + ":" + "\"" + invoke.toString() + "\"" + ", ";
+                return "\"" + field.getName() + "\"" + ":" + invoke.toString() + ", ";
             }
         }
         return "";
@@ -81,7 +83,7 @@ public class BeanToJson {
             }else if(ObjectUtil.isBean(invoke)){
                 return "\"" + field.getName() + "\"" + ":" + beanToJson2(invoke) + ", ";
             }else if(field.getGenericType().toString().equals("class java.util.Date")){
-                return "\"" + field.getName() + "\"" + ":" + "\"" + DateUtil.formatDateObj(invoke) + "\"" + ", ";
+                return "\"" + field.getName() + "\"" + ":" + "\"" + formatDateObj(invoke) + "\"" + ", ";
             }else{
                 return "\"" + field.getName() + "\"" + ":" + "\"" + invoke.toString() + "\"" + ", ";
             }

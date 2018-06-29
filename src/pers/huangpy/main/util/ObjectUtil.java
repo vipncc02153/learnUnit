@@ -19,6 +19,12 @@ public class ObjectUtil {
         return true;
     }
 
+    public static Boolean isString(Field field){
+        return field.getGenericType().toString().equals("class java.lang.StringBuilder")
+                || field.getGenericType().toString().equals("class java.lang.StringB")
+                || field.getGenericType().toString().equals("char");
+    }
+
     public static Boolean isNumber(Field field){
         return field.getGenericType().toString().equals("class java.math.BigDecimal")
                 || field.getGenericType().toString().equals("class java.lang.Long")
