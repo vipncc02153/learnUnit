@@ -1,7 +1,6 @@
 package pers.huangpy.main.util;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import com.sun.xml.internal.ws.util.StringUtils;
 import pers.huangpy.main.appointtask.TaskDTO;
 
@@ -9,11 +8,13 @@ import javax.management.StringValueExp;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class HumpUtil {
 
@@ -101,6 +102,48 @@ public class HumpUtil {
         System.out.println(list2.toString());
     }
 
+    public static void maintest3(){
+        List<Integer> list1 = Arrays.asList(1,2,3,4);
+        List<Integer> list2 = new ArrayList<>();
+
+        try{
+            list1.stream().filter(r->r == 5).collect(Collectors.toList());
+        }catch (Exception e){
+            System.out.println("1:" + e);
+        }
+
+        try{
+            list2.stream().filter(r->r == 5).collect(Collectors.toList());
+        }catch (Exception e){
+            System.out.println("2:" + e);
+        }
+    }
+
+    public static void maintest5() {
+
+        List<Integer> longs = Arrays.asList(1,2,3,4,5,6);
+
+        String a =  join(longs.iterator(),  "|");
+        List<String> longss = Arrays.asList(a.split("\\|"));
+
+        System.out.println(longss);
+    }
+
+    public static void diffList(){
+        List<Integer> existList = Arrays.asList(1,2,3,4);
+        List<Integer> nowList = Arrays.asList(3,5,4,9);
+
+        List<Integer> updates = new ArrayList<>();
+        nowList.forEach(r->{
+            if (existList.contains(r)){
+                updates.add(r);
+            }
+        });
+
+        existList.removeAll(nowList);
+
+    }
+
     public static void maintest2(){
         TaskDTO customer = new TaskDTO();
         customer.setTaskId(123L);
@@ -137,5 +180,38 @@ public class HumpUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    public static String join(Iterator iterator, String separator) {
+
+        // handle null, zero and one elements before building a buffer
+        if (iterator == null) {
+            return null;
+        }
+        if (!iterator.hasNext()) {
+            return "";
+        }
+        Object first = iterator.next();
+        if (!iterator.hasNext()) {
+            return first.toString();
+        }
+
+        // two or more elements
+        StringBuffer buf = new StringBuffer(256); // Java default is 16, probably too small
+        if (first != null) {
+            buf.append(first);
+        }
+
+        while (iterator.hasNext()) {
+            if (separator != null) {
+                buf.append(separator);
+            }
+            Object obj = iterator.next();
+            if (obj != null) {
+                buf.append(obj);
+            }
+        }
+        return buf.toString();
     }
 }
